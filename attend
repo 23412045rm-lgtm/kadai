@@ -1,3 +1,6 @@
+// 23412045 持井　亮祐
+
+
 class StudentResult {
 
     private static final int PASS_SCORE = 60;
