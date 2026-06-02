@@ -1,0 +1,77 @@
+class StudentResult {
+
+    private static final int PASS_SCORE = 60;
+    private static final int LATE_CONVERSION = 3;
+
+    private int attendanceCount;
+    private int lateCount;
+    private int totalClasses;
+
+    public StudentResult(int attendanceCount,
+                         int lateCount,
+                         int totalClasses) {
+        this.attendanceCount = attendanceCount;
+        this.lateCount = lateCount;
+        this.totalClasses = totalClasses;
+    }
+
+    public boolean hasExamQualification() {
+
+        // 遅刻3回を欠席1回として換算した実質出席回数を計算
+        int effectiveAttendance =
+                attendanceCount - lateCount / LATE_CONVERSION;
+
+        // 実質出席回数が総授業数の3分の2以上なら受験資格あり
+        return effectiveAttendance >= totalClasses * 2 / 3;
+    }
+
+    public boolean isPassed(int testScore, int reportScore) {
+
+        // 受験資格がない場合は不合格
+        if (!hasExamQualification()) {
+            return false;
+        }
+
+        // テスト点とレポート点の合計が合格基準以上か判定
+        return testScore + reportScore >= PASS_SCORE;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // 出席回数・遅刻回数・総授業数を入力
+        int attendanceCount = sc.nextInt();
+
+        // 遅刻回数を入力
+        int lateCount = sc.nextInt();
+
+        // 授業の総回数を入力
+        int totalClasses = sc.nextInt();
+
+        // テスト点を入力
+        int testScore = sc.nextInt();
+
+        // レポート点を入力
+        int reportScore = sc.nextInt();
+
+        // 学生の出席情報を保持するオブジェクトを生成
+        StudentResult student =
+                new StudentResult(
+                        attendanceCount,
+                        lateCount,
+                        totalClasses);
+
+        // 合否判定を行い結果を表示
+        System.out.println(
+                student.isPassed(
+                        testScore,
+                        reportScore)
+                        ? "PASS"
+                        : "FAIL");
+
+        sc.close();
+    }
+}
